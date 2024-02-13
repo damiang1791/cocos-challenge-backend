@@ -12,14 +12,26 @@ export enum OrderSide {
   CASH_OUT = 'CASH_OUT',
 }
 
+export interface AccountBalance {
+  cash: number;
+  balance: number;
+}
+
 export interface InstrumentDetail {
-  instrument: string,
-  quantity: number,
-  totalValue: number,
-  performance: number
+  instrument: string;
+  instrumentName: string;
+  quantity: number;
+  totalValue: number;
+  performance: number;
 }
 
 export interface Balance {
-  totalAmount: number,
-  instruments: InstrumentDetail[]
+  totalAmountInstruments: number;
+  instruments: InstrumentDetail[];
+}
+
+export interface TotalBalance {
+  totalAmountInstruments: number;
+  amountAvailable: number;
+  instruments: InstrumentDetail[];
 }

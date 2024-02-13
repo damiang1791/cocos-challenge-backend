@@ -13,27 +13,29 @@ export class UserService {
     private orderService: OrderService,
   ) {}
 
-  async getUserById(userId: number): Promise<UserEntity> {
-    return this.repository.findOneBy({ id: userId });
+  private async getUserById(userId: number): Promise<UserEntity> {
+    const user = await this.repository.findOneBy({ id: userId });
+
+    console.log({ user });
+
+    if (!user) throw new Error('User not found.');
+
+    return user;
   }
 
-  // Portfolio: La respuesta deberá devolver el valor total de la cuenta de un usuario,
-  // sus pesos disponibles para operar el listado de activos que posee
-  // (incluyendo cantidad de acciones, el valor total monetario de la posición ($)
-  // y el rendimiento total (%)).
-
   async getUserAndAccount(userId: number): Promise<UserPortfolio> {
-    const {id, accountnumber} = await this.repository.findOneBy({ id: userId });
+    const { id, accountnumber } = await this.getUserById(userId);
 
-    const {totalAmount, instruments} = await this.orderService.findReportByUserId(userId);
+    const { totalAmountInstruments, amountAvailable, instruments } =
+      await this.orderService.findReportByUserId(userId);
 
-    const resp: UserPortfolio = {
+    return {
       userId: id,
       accountNumber: accountnumber,
-      totalAmount: totalAmount,
+      totalAmount: totalAmountInstruments + amountAvailable,
+      amountAvailable,
+      totalAmountInstruments,
       instruments,
     };
-
-    return resp;
   }
 }

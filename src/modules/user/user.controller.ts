@@ -11,7 +11,6 @@ export class UserController {
     try {
       return this.userService.getUserAndAccount(userId);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

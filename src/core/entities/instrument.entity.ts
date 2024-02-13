@@ -9,7 +9,7 @@ export class InstrumentEntity {
   id: number;
 
   @Column({ type: 'varchar' })
-  ticker: number;
+  ticker: string;
 
   @Column({ type: 'varchar' })
   name: string;
