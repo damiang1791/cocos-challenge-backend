@@ -9,16 +9,14 @@ export interface PostgresConfig {
 }
 
 export interface AppConfig {
-  port: number;
   postgres: PostgresConfig;
 }
 
 const config = registerAs('config', (): AppConfig => {
   return {
-    port: parseInt(process.env.PORT) ?? 3000,
     postgres: {
       host: process.env.DB_HOST ?? 'babar.db.elephantsql.com',
-      port: parseInt(process.env.DB_PORT) ?? 5432,
+      port: parseInt(process.env.DB_PORT ?? "5432"),
       user: process.env.DB_USERNAME ?? 'azixrkfm',
       password: process.env.DB_PASSWORD ?? 'AH34v0SYL41ISh7iMkVYyCthOjStqbah',
       dbName: process.env.DB_DATABASE ?? 'azixrkfm',

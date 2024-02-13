@@ -1,12 +1,5 @@
 import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
-export enum OrderState {
-  NEW = 'NEW',
-  FILLED = 'FILLED',
-  REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED',
-}
-
 @Entity({
   name: 'orders',
 })
@@ -16,10 +9,10 @@ export class OrderEntity {
   id: number;
 
   @Column({ type: 'integer' })
-  instrumentId: number;
+  instrumentid: number;
 
   @Column({ type: 'integer' })
-  userId: number;
+  userid: number;
 
   @Column({ type: 'integer' })
   size: number;

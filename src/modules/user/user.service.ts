@@ -23,17 +23,14 @@ export class UserService {
   // y el rendimiento total (%)).
 
   async getUserAndAccount(userId: number): Promise<UserPortfolio> {
-    const user = await this.repository.findOneBy({ id: userId });
+    const {id, accountnumber} = await this.repository.findOneBy({ id: userId });
 
-    const report = this.orderService;
-
-    const totalAmount = 0;
-    const instruments = 0;
+    const {totalAmount, instruments} = await this.orderService.findReportByUserId(userId);
 
     const resp: UserPortfolio = {
-      userId: user.id,
-      accountNumber: user.accountnumber,
-      totalAmount,
+      userId: id,
+      accountNumber: accountnumber,
+      totalAmount: totalAmount,
       instruments,
     };
 

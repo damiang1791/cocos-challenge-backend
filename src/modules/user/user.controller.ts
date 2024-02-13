@@ -9,7 +9,7 @@ export class UserController {
   @HttpCode(200)
   public async getUserById(@Param('userId') userId: number) {
     try {
-      return this.userService.getUserById(userId);
+      return this.userService.getUserAndAccount(userId);
     } catch (error) {
       console.error(error);
       throw error;
