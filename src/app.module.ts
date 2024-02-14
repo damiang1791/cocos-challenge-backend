@@ -5,6 +5,7 @@ import { HealthController } from './core/health/health.controller';
 import { UserModule } from './modules/user/user.module';
 import { OrderModule } from './modules/order/order.module';
 import { InstrumentModule } from './modules/instrument/instrument.module';
+import { MarketdataModule } from './modules/marketdata/marketdata.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { InstrumentModule } from './modules/instrument/instrument.module';
     InstrumentModule,
     UserModule,
     OrderModule,
+    MarketdataModule,
   ],
   controllers: [HealthController],
   providers: [],

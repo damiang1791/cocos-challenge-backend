@@ -18,7 +18,7 @@ export class UserController {
     status: HttpStatus.NOT_FOUND,
     description: 'User not found.',
   })
-  public async getUserById(
+  public async getUserAndAccount(
     @Param('userId') userId: number,
   ): Promise<UserPortfolio> {
     try {

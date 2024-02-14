@@ -13,7 +13,6 @@ export class InstrumentController {
     @Query('query') query: string = '',
   ): Promise<InstrumentEntity[]> {
     try {
-      console.log(query);
       return await this.instrumentService.getInstrument(query);
     } catch (error) {
       const message = `Error searching instrument for name or ticker.`;

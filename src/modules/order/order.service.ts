@@ -19,6 +19,7 @@ import {
   OrderCanceledInsufficientAmountError,
   OrderCanceledInsufficientInstrumentsError,
 } from './order.errors';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class OrderService {
@@ -27,6 +28,8 @@ export class OrderService {
     private repository: Repository<OrderEntity>,
     private instrumentService: InstrumentService,
     private marketdataService: MarketdataService,
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
   ) {}
 
   findOrdersByUserId(userId: number): Promise<OrderEntity[]> {
@@ -163,6 +166,8 @@ export class OrderService {
   }
 
   async createOrder(createOrder: CreateOrderDto) {
+    await this.userService.getUserById(createOrder.userId);
+
     if (createOrder.side === OrderSideOperation.SELL) {
       await this.validateQuantityOfInstruments(
         createOrder.userId,
