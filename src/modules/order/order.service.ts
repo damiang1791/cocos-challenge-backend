@@ -8,6 +8,8 @@ import {
   OrderState,
   InstrumentDetail,
   TotalBalance,
+  CreateOrderDto,
+  OrderType,
 } from './order.types';
 import { InstrumentService } from '../instrument/instrument.service';
 import { MarketdataService } from '../marketdata/marketdata.service';
@@ -127,5 +129,30 @@ export class OrderService {
       totalAmountInstruments,
       instruments,
     };
+  }
+
+  async createOrder(createOrder: CreateOrderDto) {
+    const newOrder = this.repository.create();
+
+    newOrder.userid = createOrder.userId;
+    newOrder.size = createOrder.size;
+    newOrder.type = createOrder.type;
+    newOrder.side = createOrder.side;
+    newOrder.datetime = new Date();
+
+    const { id: instrumentid } =
+      await this.instrumentService.getInstrumentByTicker(createOrder.ticker);
+    newOrder.instrumentid = instrumentid;
+
+    if (createOrder.type === OrderType.LIMITE) {
+      newOrder.price = createOrder.limitPrice;
+      newOrder.status = OrderState.NEW;
+    } else if (createOrder.type === OrderType.MARKET) {
+      const { close } = await this.marketdataService.findOne(instrumentid);
+      newOrder.price = close;
+      newOrder.status = OrderState.FILLED;
+    }
+
+    return await this.repository.save(newOrder);
   }
 }
