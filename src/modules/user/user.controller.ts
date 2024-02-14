@@ -1,5 +1,7 @@
 import { Controller, Get, HttpCode, Param } from '@nestjs/common';
 import { UserService } from './user.service';
+import { handleError } from '../../core/error/error';
+import { UserPortfolio } from './user.types';
 
 @Controller('user')
 export class UserController {
@@ -7,11 +9,14 @@ export class UserController {
 
   @Get(':userId')
   @HttpCode(200)
-  public async getUserById(@Param('userId') userId: number) {
+  public async getUserById(
+    @Param('userId') userId: number,
+  ): Promise<UserPortfolio> {
     try {
-      return this.userService.getUserAndAccount(userId);
+      return await this.userService.getUserAndAccount(userId);
     } catch (error) {
-      throw error;
+      const message = `Error searching user for userId.`;
+      return handleError(error, message);
     }
   }
 }

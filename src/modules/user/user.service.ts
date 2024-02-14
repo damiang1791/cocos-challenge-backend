@@ -4,6 +4,7 @@ import { UserEntity } from '../../core/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserPortfolio } from './user.types';
 import { OrderService } from '../order/order.service';
+import { UserNotFoundError } from './user.errors';
 
 @Injectable()
 export class UserService {
@@ -16,9 +17,9 @@ export class UserService {
   private async getUserById(userId: number): Promise<UserEntity> {
     const user = await this.repository.findOneBy({ id: userId });
 
-    console.log({ user });
-
-    if (!user) throw new Error('User not found.');
+    if (!user) {
+      throw new UserNotFoundError(userId);
+    }
 
     return user;
   }
