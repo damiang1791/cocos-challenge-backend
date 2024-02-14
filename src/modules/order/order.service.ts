@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from '../../core/entities/order.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   Balance,
   OrderSide,
@@ -10,10 +10,15 @@ import {
   TotalBalance,
   CreateOrderDto,
   OrderType,
+  OrderSideOperation,
 } from './order.types';
 import { InstrumentService } from '../instrument/instrument.service';
 import { MarketdataService } from '../marketdata/marketdata.service';
 import { instrumentType } from '../instrument/instrument.type';
+import {
+  OrderCanceledInsufficientAmountError,
+  OrderCanceledInsufficientInstrumentsError,
+} from './order.errors';
 
 @Injectable()
 export class OrderService {
@@ -131,7 +136,47 @@ export class OrderService {
     };
   }
 
+  private async validateQuantityOfInstruments(
+    userId: number,
+    ticker: string,
+    size: number,
+  ) {
+    const { instruments } = await this.getUserInstruments(userId);
+    const [instrument] = instruments.filter(
+      (inst) => inst.instrument === ticker,
+    );
+
+    if (!instrument || instrument.quantity < size) {
+      throw new OrderCanceledInsufficientInstrumentsError(ticker);
+    }
+  }
+
+  private async validateAmount(userId: number, ticker: string, size: number) {
+    const amountAvailable = await this.getAmountAvailable(userId);
+    const { id: instrumentid } =
+      await this.instrumentService.getInstrumentByTicker(ticker);
+    const { close } = await this.marketdataService.findOne(instrumentid);
+
+    if (size * close < amountAvailable) {
+      throw new OrderCanceledInsufficientAmountError(ticker);
+    }
+  }
+
   async createOrder(createOrder: CreateOrderDto) {
+    if (createOrder.side === OrderSideOperation.SELL) {
+      await this.validateQuantityOfInstruments(
+        createOrder.userId,
+        createOrder.ticker,
+        createOrder.size,
+      );
+    } else if (createOrder.side === OrderSideOperation.BUY) {
+      await this.validateAmount(
+        createOrder.userId,
+        createOrder.ticker,
+        createOrder.size,
+      );
+    }
+
     const newOrder = this.repository.create();
 
     newOrder.userid = createOrder.userId;

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../core/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -14,7 +14,7 @@ export class UserService {
     private orderService: OrderService,
   ) {}
 
-  private async getUserById(userId: number): Promise<UserEntity> {
+  async getUserById(userId: number): Promise<UserEntity> {
     const user = await this.repository.findOneBy({ id: userId });
 
     if (!user) {
