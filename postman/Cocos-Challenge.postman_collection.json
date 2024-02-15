@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "9d4f08bd-d515-4dd1-bc02-0f23b54113ab",
+		"name": "Cocos-Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25148307"
+	},
+	"item": [
+		{
+			"name": "user/:userId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user/:userId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instrument",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/instrument?query=cad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"instrument"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "cad"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Order Limite",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"side\": \"BUY\",\n    \"type\": \"LIMITE\",\n    \"ticker\": \"BYMA\",\n    \"size\": 10,\n    \"limitPrice\": 123\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/order"
+			},
+			"response": []
+		},
+		{
+			"name": "New Order Market",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"side\": \"BUY\",\n    \"type\": \"MARKET\",\n    \"ticker\": \"BYMA\",\n    \"size\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/order"
+			},
+			"response": []
+		}
+	]
+}
