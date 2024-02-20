@@ -2,9 +2,10 @@ import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { handleError } from '../../core/error/error';
 import { UserPortfolio } from './user.types';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -13,6 +14,7 @@ export class UserController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Search user.',
+    type: UserPortfolio,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,

@@ -77,7 +77,7 @@ export class CreateOrderDto {
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty({ required: true, example: 'random@modo.com.ar' })
+  @ApiProperty({ required: true, example: 'random@cocos.com.ar' })
   readonly ticker: string;
 
   @IsNotEmpty()

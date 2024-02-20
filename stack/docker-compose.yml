@@ -1,0 +1,15 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12-alpine
+    container_name: cocos-challenge-postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - cocos_challenge_data:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
+volumes:
+  cocos_challenge_data:

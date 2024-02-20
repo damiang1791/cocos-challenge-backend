@@ -15,11 +15,11 @@ export interface AppConfig {
 const config = registerAs('config', (): AppConfig => {
   return {
     postgres: {
-      host: process.env.DB_HOST ?? 'babar.db.elephantsql.com',
-      port: parseInt(process.env.DB_PORT ?? "5432"),
-      user: process.env.DB_USERNAME ?? 'azixrkfm',
-      password: process.env.DB_PASSWORD ?? 'AH34v0SYL41ISh7iMkVYyCthOjStqbah',
-      dbName: process.env.DB_DATABASE ?? 'azixrkfm',
+      host: process.env.DB_HOST ?? 'localhost',
+      port: parseInt(process.env.DB_PORT ?? '5432'),
+      user: process.env.DB_USERNAME ?? 'postgres',
+      password: process.env.DB_PASSWORD ?? 'postgres',
+      dbName: process.env.DB_DATABASE ?? 'postgres',
     },
   };
 });
