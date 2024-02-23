@@ -160,7 +160,7 @@ export class OrderService {
       await this.instrumentService.getInstrumentByTicker(ticker);
     const { close } = await this.marketdataService.findOne(instrumentid);
 
-    if (size * close < amountAvailable) {
+    if (size * close > amountAvailable) {
       throw new OrderCanceledInsufficientAmountError(ticker);
     }
   }
